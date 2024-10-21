@@ -33,6 +33,33 @@ class Display:
 
         pygame.display.set_caption(f"{self.cols}x{self.rows} Pixel Game")
 
+        #self.color = ColorPalette()
+
+        self.color = {
+            "red": (255, 0, 0),              # Bright red
+            "green": (0, 240, 0),            # Vivid green
+            "blue": (0, 50, 255),           # Bright blue
+            "orange": (255, 145, 0),         # Bright orange
+            "pink": (255, 80, 180),         # Bright pink
+            "purple": (190, 0, 255),         # Vivid purple
+            "yellow": (255, 255, 0),         # Bright yellow
+            "black": (0, 0, 0),              # Black
+            "white": (255, 255, 255),        # White
+            "cyan": (0, 255, 255),           # Cyan
+            "magenta": (255, 0, 255),        # Magenta
+            "lime": (191, 255, 0),           # Lime
+            "teal": (0, 128, 128),           # Teal
+            "brown": (165, 42, 42),          # Brown
+            "gray": (128, 128, 128),         # Gray
+            "light_gray": (211, 211, 211),   # Light gray
+            "dark_gray": (169, 169, 169),    # Dark gray
+            "gold": (255, 215, 0),           # Gold
+            "beige": (245, 245, 220),        # Beige
+            "maroon": (128, 0, 0),           # Maroon
+            "navy": (0, 0, 128),             # Navy
+            "olive": (128, 128, 0)           # Olive
+        }
+        
         # Array to hold pixel data for the display
         self.pixels = [[(0, 0, 0) for _ in range(self.cols)] for _ in range(self.rows)]
         self.led_data = bytearray(self.cols*self.rows * 3)  # 512 LEDs, 3 bytes per LED
@@ -246,8 +273,43 @@ class Display:
                 else:
                     self.tasks.remove(task)  # Remove one-time tasks
 
+class ColorPalette:
+    def __init__(self):
+        self.red = (255, 0, 0)          # Bright red
+        self.green = (0, 240, 0)        # Vivid green
+        self.blue = (0, 123, 255)       # Bright blue
+        self.orange = (255, 165, 0)     # Bright orange
+        self.pink = (255, 105, 180)     # Bright pink
+        self.purple = (150, 0, 255)     # Vivid purple
+        self.yellow = (255, 255, 0)     # Bright yellow
+        self.black = (0, 0, 0)
+        self.white = (255, 255, 255)
+
+        # Primary colors
+
+        self.cyan = (0, 255, 255)
+        self.magenta = (255, 0, 255)
+
+        # Secondary colors
+        self.orange = (255, 165, 0)
+        self.lime = (191, 255, 0)
+        self.teal = (0, 128, 128)
+        self.brown = (165, 42, 42)
+
+        # Grayscale colors
+        self.gray = (128, 128, 128)
+        self.light_gray = (211, 211, 211)
+        self.dark_gray = (169, 169, 169)
+
+        # Some additional colors
+        self.gold = (255, 215, 0)
+        self.beige = (245, 245, 220)
+        self.maroon = (128, 0, 0)
+        self.navy = (0, 0, 128)
+        self.olive = (128, 128, 0)
+
 class Player:
-    def __init__(self, color, health, score=0,pos=[0,0]):
+    def __init__(self, color:str, score=0, health=0,pos=[0,0]):
         """Initialize the Player class with specified ... .
         
         Args:
@@ -257,13 +319,13 @@ class Player:
         self.color = color  
         self.health = health  
         self.score = score  
+        self.pos = pos  
         self.is_alive = True  
 
         # timer
         self.tasks = []
         # timer 
 
-    def 
 
 
     # timer class        
@@ -300,6 +362,7 @@ def main():
 
     while running:
         game_display.fill((25, 20, 12))
+        game_display.fill(game_display.color['black'])
         r +=1
         g +=6
         b +=12

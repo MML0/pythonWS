@@ -6,11 +6,10 @@ game_display = espdisplay.Display(col, row)
 
 player_number = int(input("num?:"))
 
-players = {
-    
-}
+_colors = ['blue','green','white','yellow','pink','orange','purple']
+players = []
 for i in range(player_number):
-
+    players.append(espdisplay.Player(_colors[i],0,0))
 running = True
 
 # Function to move the snake based on direction
@@ -31,7 +30,7 @@ def move_snake():
 
 
 # Schedule snake movement using an interval (similar to setInterval in JS)
-game_display.set_interval(move_snake, 0.1)  # Move the snake every 0.5 seconds
+#game_display.set_interval(move_snake, 0.1)  # Move the snake every 0.5 seconds
 
 def spawn_food():
     global food
@@ -40,22 +39,32 @@ def spawn_food():
         while food in snake:
             food = [random.randint(0, col-1), random.randint(0, row-1)]
 
-game_display.set_interval(spawn_food, 2)  # Spawn food every 2 seconds
+#game_display.set_interval(spawn_food, 2)  # Spawn food every 2 seconds
 
 
+for player in players:
+    game_display.put(random.randint(0,col),random.randint(0,row) , game_display.color[player.color])
+    game_display.put(random.randint(0,col),random.randint(0,row) , game_display.color[player.color])
+    game_display.put(random.randint(0,col),random.randint(0,row) , game_display.color[player.color])
+    game_display.put(random.randint(0,col),random.randint(0,row) , game_display.color[player.color])
 while running:
     game_display.handle_events()
-    game_display.fill((12, 18, 23))  
+    #game_display.fill(game_display.color['black'])  
 
     # Process clicked blocks in the main loop
     if game_display.clicked_blocks:
         for block in game_display.clicked_blocks:
             x = block[0]
             y = block[1]
+            for player in players:
+                if game_display.color[player.color] == game_display.pixels[y][x]:
+                    player.score += 1
+                    print(player.color, player.score)
+                    game_display.put(random.randint(0,col),random.randint(0,row) , game_display.color[player.color])
             if game_display.pixels[y][x][0] == 250:
                 game_display.put(x, y, (0, 0, 0))
             else:
-                game_display.put(x, y, (250, 0, 0))
+                game_display.put(x, y, (0, 0, 0))
 
         game_display.clicked_blocks.clear()
 
@@ -72,13 +81,6 @@ while running:
             break
         game_display.clicked_keys.clear()
 
-
-    for xy in snake :
-        game_display.put(xy[0],xy[1], (250, 0, 0))
-    if food:
-        game_display.put(food[0],food[1], (0, 110, 250))
-
-    
 
     #game_display.draw_line((2, 2), (31, 14), (0, 255, 0))
     #game_display.put(x, y, (250, 0, 0))
