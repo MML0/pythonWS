@@ -25,7 +25,7 @@ while running:
 
     #game_display.put(0,0, (250, 0, 0))
     for i in range(10):
-        game_display.put(random.randint(0,col),random.randint(0,row), (random.randint(0,50), random.randint(0,50), random.randint(0,50)))
+        game_display.put(random.randint(0,col),random.randint(0,row), (random.randint(0,250), random.randint(0,250), random.randint(0,250)))
 
     
 
