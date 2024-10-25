@@ -5,7 +5,7 @@ import serial
 import threading
 
 class Display:
-    def __init__(self, cols, rows, pixel_width=40,baudrate=2000000):
+    def __init__(self, cols, rows, pixel_width=40,baudrate=2000000,connection_type='serial',esp_ip = '192.168.43.169',esp_port = 8266 ):
         """Initialize the Display class with specified columns, rows, pixel width, and baud rate.
         
         Args:
@@ -64,6 +64,20 @@ class Display:
         self.pixels = [[(0, 0, 0) for _ in range(self.cols)] for _ in range(self.rows)]
         self.led_data = bytearray(self.cols*self.rows * 3)  # 512 LEDs, 3 bytes per LED
         self.ser = None
+
+        self.connection_type = connection_type
+
+        if connection_type=='wifi':
+            import socket
+
+            # Set the IP address and port of the ESP8266
+            self.esp_ip = esp_ip  # Replace with your ESP8266's IP address
+            self.esp_port = esp_port # Replace with the port number your ESP is listening on
+
+            # Create a UDP socket
+            self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+
         try:
             self.ser = serial.Serial('COM8', baudrate)  # Adjust COM port
             self.serial_thread = threading.Thread(target=self.receive_data)
@@ -79,8 +93,11 @@ class Display:
         This method sends a sync byte followed by the LED data to the ESP8266.
         """
         try:
-            self.ser.write(b'\xAA')  # Send sync byte first (0xAA)
-            self.ser.write(self.led_data)     # Send the entire byte array to the ESP8266
+            if self.connection_type == 'wifi':
+                self.sock.sendto(b'\xAA'+self.led_data, (self.esp_ip, self.esp_port))
+            else:
+                self.ser.write(b'\xAA')  # Send sync byte first (0xAA)
+                self.ser.write(self.led_data)     # Send the entire byte array to the ESP8266
         except Exception as er:
             pass
 
@@ -352,7 +369,9 @@ class Player:
 
 # Example usage:
 def main():
-    game_display = Display(32, 16)
+
+    #game_display = Display(32, 16)
+    game_display = Display(32, 32, pixel_width=20,connection_type='wifi',esp_ip = '192.168.43.169',esp_port = 8266 ,)
 
     running = True
     r = 25
@@ -382,8 +401,9 @@ def main():
             game_display.clicked_blocks.clear()
 
         # Blue background
-        game_display.draw_line((2, 2), (31, 14), (150, 255, 0))
-        game_display.draw_rectangle((1, 1), (7, 5), (125, 255, 200),True,(r%250)/230)
+        game_display.draw_line((2, 2), (31, 14), (50, 20, 0))
+        game_display.draw_line((15, 0), (32, 0), (10, 200,100),(r%250)/230)
+        game_display.draw_rectangle((1, 1), (7, 5), (50, 50, 20),True,(r%250)/230)
         game_display.draw_rectangle((8, 10), (12, 14), (15, 100, 0),False,(r%250)/200)
 
         #game_display.put(x, y, (250, 0, 0))
