@@ -5,7 +5,7 @@ import serial
 import threading
 
 class Display:
-    def __init__(self, cols, rows, pixel_width=40,baudrate=2000000,connection_type='serial',esp_ip = '192.168.43.169',esp_port = 8266 ):
+    def __init__(self, cols, rows, pixel_width=40,baudrate=2000000,com_port='COM8',connection_type='serial',esp_ip = '192.168.43.169',esp_port = 8266 ):
         """Initialize the Display class with specified columns, rows, pixel width, and baud rate.
         
         Args:
@@ -79,7 +79,7 @@ class Display:
 
 
         try:
-            self.ser = serial.Serial('COM8', baudrate)  # Adjust COM port
+            self.ser = serial.Serial(com_port, baudrate)  # Adjust COM port
             self.serial_thread = threading.Thread(target=self.receive_data)
             self.serial_thread.daemon = True  # Thread exits when main program exits
             self.serial_thread.start()
@@ -88,9 +88,9 @@ class Display:
             print(er)
 
     def send_led_data(self):
-        """Send the LED data over the serial connection.
+        """Send the LED data over the serial or wifi connection.
         
-        This method sends a sync byte followed by the LED data to the ESP8266.
+        This method sends a sync byte followed by the LED data to the ESP.
         """
         try:
             if self.connection_type == 'wifi':
@@ -405,6 +405,7 @@ def main():
         game_display.draw_line((15, 0), (32, 0), (10, 200,100),(r%250)/230)
         game_display.draw_rectangle((1, 1), (7, 5), (50, 50, 20),True,(r%250)/230)
         game_display.draw_rectangle((8, 10), (12, 14), (15, 100, 0),False,(r%250)/200)
+        game_display.put(x, y, (250, 0, 0))
 
         #game_display.put(x, y, (250, 0, 0))
 
