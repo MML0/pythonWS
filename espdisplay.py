@@ -371,7 +371,7 @@ class Player:
 def main():
 
     #game_display = Display(32, 16)
-    game_display = Display(32, 32, pixel_width=20,connection_type='wifi',esp_ip = '192.168.43.169',esp_port = 8266 ,)
+    game_display = Display(32, 32, pixel_width=20,connection_type='wifi',esp_ip = '192.168.43.232',esp_port = 8266 ,)
 
     running = True
     r = 25

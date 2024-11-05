@@ -367,7 +367,7 @@ class Player:
 
 # Example usage:
 def main():
-    game_display = Display(32, 32, pixel_width=20)
+    game_display = Display(100, 1, pixel_width=20)
     #game_display = Display(4, 4)
 
     running = True
