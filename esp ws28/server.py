@@ -4,8 +4,8 @@ import random
 # Configure server IP and port
 server_ip = "192.168.43.81"  # Use your server's IP
 server_port = 8266
-esp_ip = "192.168.43.232"  # ESP's static IP   32
 esp_ip = "192.168.43.222"  # ESP's static IP 8266
+esp_ip = "192.168.43.232"  # ESP's static IP   32
 
 # Create a UDP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

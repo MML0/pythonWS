@@ -3,9 +3,10 @@
 #include <FastLED.h>
 
 #define LED_PIN 2  // Pin connected to the data line of the WS2812B
-#define NUM_LEDS 1350  // Total number of LEDs in the strip
+#define NUM_LEDS 1200  // Total number of LEDs in the strip
+#define NUM_BYTES 400  // Total number of LEDs in the strip
 #define LED_TYPE WS2812B
-#define COLOR_ORDER GRB
+#define COLOR_ORDER BRG
 
 CRGB leds[NUM_LEDS];
 uint8_t Data[NUM_LEDS * 3];
@@ -51,14 +52,23 @@ void loop() {
     byte startByte = udp.read();
     
     if (startByte == 0xAA) {   // Check for sync byte (0xAA)
-      udp.read(Data, NUM_LEDS * 3);  // Read RGB data
+      udp.read(Data, NUM_BYTES * 3);  // Read RGB data
       
-      for (int i = 0; i < NUM_LEDS; i++) {
+      for (int i = 0; i < NUM_BYTES; i++) {
         byte r = Data[i * 3];
         byte g = Data[i * 3 + 1];
         byte b = Data[i * 3 + 2];
-        leds[i] = CRGB(r, g, b);  // Set color for LED
+        leds[i*3] = CRGB(r, g, b);  // Set color for LED
+        leds[i*3+1] = CRGB(r, g, b);  // Set color for LED
+        leds[i*3+2] = CRGB(r, g, b);  // Set color for LED
       }
+      
+      // for (int i = 0; i < NUM_LEDS; i++) {
+      //   byte r = Data[i * 3];
+      //   byte g = Data[i * 3 + 1];
+      //   byte b = Data[i * 3 + 2];
+      //   leds[i] = CRGB(r, g, b);  // Set color for LED
+      // }
 
       FastLED.show();
 
