@@ -3,18 +3,18 @@
 #include <FastLED.h>
 
 #define LED_PIN 2  // Pin connected to the data line of the WS2812B
-#define NUM_LEDS 1200  // Total number of LEDs in the strip
-#define NUM_BYTES 400  // Total number of LEDs in the strip
-#define LED_TYPE WS2812B
+#define NUM_LEDS 900  // Total number of LEDs in the strip
+#define NUM_BYTES 300  // Total number of LEDs in the strip
+#define LED_TYPE WS2811
 #define COLOR_ORDER BRG
 
 CRGB leds[NUM_LEDS];
 uint8_t Data[NUM_LEDS * 3];
 
-const char* ssid = "net emam limited edition"; // Replace with your network SSID
+const char* ssid = "lil"; // Replace with your network SSID
 const char* password = "12345678an";           // Replace with your network password
-const IPAddress staticIP(192, 168, 43, 232);   // Static IP for the ESP8266
-const IPAddress gateway(192, 168, 43, 1);      // Default gateway
+const IPAddress staticIP(192, 168, 1, 234);   // Static IP for the ESP8266
+const IPAddress gateway(192, 168, 1, 1);      // Default gateway
 const IPAddress subnet(255, 255, 255, 0);      // Subnet mask
 
 unsigned int localPort = 8266;  // Local port to listen for UDP packets
